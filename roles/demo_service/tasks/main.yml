@@ -1,0 +1,8 @@
+---
+
+- name: Service Placeholder
+  debug:
+    msg: "{{ service_name }}"
+  changed_when: true 
+  when: service_name is defined
+  notify: "{{service_name}}"

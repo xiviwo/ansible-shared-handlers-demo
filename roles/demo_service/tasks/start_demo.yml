@@ -1,0 +1,4 @@
+--- 
+- name: Start very complicate service 
+  debug:
+    msg: "start complicate demo service successfully"

@@ -1,0 +1,12 @@
+
+
+[test_group]
+testhost ansible_host="10.25.10.50" ansible_become_password='abcdefg'
+
+[all:vars]
+ansible_python_interpreter=/usr/bin/python3
+ansible_user = 'vagrant'
+ansible_ssh_user = 'vagrant'
+ansible_become_user = 'root'
+ansible_private_key_file="~/.vagrant.d/insecure_private_key"
+ansible_ssh_common_args='-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null '

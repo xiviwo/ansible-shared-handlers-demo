@@ -1,0 +1,4 @@
+--- 
+- name: "Something change inside role, need to notify to restart demo service"
+  shell: "true"
+  notify: restart demo

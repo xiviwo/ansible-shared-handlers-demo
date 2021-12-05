@@ -1,0 +1,4 @@
+--- 
+- name: Stop very complicate service 
+  debug:
+    msg: "Stop complicate demo service successfully "

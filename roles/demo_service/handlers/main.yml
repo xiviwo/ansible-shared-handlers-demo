@@ -1,0 +1,10 @@
+---
+
+- name: start demo 
+  include_tasks: start_demo.yml 
+
+- name: stop demo 
+  include_tasks: stop_demo.yml 
+
+- name: restart demo 
+  include_tasks: restart_demo.yml 

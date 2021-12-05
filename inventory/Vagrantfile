@@ -1,0 +1,42 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+VAGRANTFILE_API_VERSION = "2"
+
+box = ENV['VBOX'] || "centos/8"
+mem = ENV['VMEM'] || "4096"
+cpus = ENV['VCPU'] || 2
+
+nodes = [
+  { :hostname => "testhost", :ip => "10.25.10.50", :port => 4443 },
+]
+
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+
+  nodes.each do |node|
+    config.vm.define node[:hostname] do |nodeconfig|
+
+      nodeconfig.vm.box = box
+      nodeconfig.ssh.insert_key = false
+      nodeconfig.vm.hostname = node[:hostname]
+
+      if node[:ip]
+        nodeconfig.vm.network :private_network, ip: node[:ip]
+        nodeconfig.vm.network :forwarded_port, guest: 443, host: node[:port]
+      end
+
+      nodeconfig.vm.provider :libvirt do |libvirt|
+        libvirt.driver = "kvm"
+        libvirt.memory = mem
+        libvirt.cpus = cpus
+        libvirt.nested = false
+      end  #end libvirt provider
+
+      nodeconfig.vm.provider :virtualbox do |v|
+        v.customize ["modifyvm", :id, "--memory", mem]
+      end
+
+    end # end node config
+
+  end #end node loop
+
+end #end configure

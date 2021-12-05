@@ -1,0 +1,42 @@
+---
+- name: Shared handler Scenario 1
+  hosts: testhost
+  become: true
+  gather_facts: no
+  tasks:
+    # Must include demo_service role, so that shared handler can be found
+    - include_role:
+        name: demo_service
+      tags: always 
+
+    - name: "Something change, need to notify to restart demo"
+      shell: "true"
+      notify: restart demo
+
+
+- name: Shared handler Scenario 2
+  hosts: testhost
+  become: true
+  gather_facts: no
+  tasks:
+    - name: Restart demo service immediately without waiting for handler(case 1)
+      include_role:
+        name: demo_service
+        tasks_from: restart_demo.yml
+
+    - name: Restart demo service directly with handler (case 2)
+      include_role:
+        name: demo_service
+      vars:
+        service_name: restart demo
+
+
+
+- name: Shared handler Scenario 3
+  hosts: testhost
+  become: true
+  gather_facts: no
+  roles:
+    # Must include demo_service role, so that shared handler can be found
+    - { role: demo_service, tags: always } 
+    - { role: call_shared_handler_role, tags: test }
